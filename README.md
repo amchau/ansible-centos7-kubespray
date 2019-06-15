@@ -1,4 +1,4 @@
-# ansible-centos7-kubespray
+# ansible-ubuntu-kubespray
 
 Ansible playbook to configure prerequisites for Kubespray on CentOS7
 
@@ -20,9 +20,9 @@ Add the IP's of your CentOS7 servers in the `hosts.ini`.
 
 ```
 [all]
-node1 ansible_host=192.168.140.101
-node2 ansible_host=192.168.140.102
-node3 ansible_host=192.168.140.103
+node1 ansible_host=192.168.56.101
+node2 ansible_host=192.168.56.102
+node3 ansible_host=192.168.56.103
 ```
 
 Start the playbook. Define variables like root password, user, group and path to the public key.
