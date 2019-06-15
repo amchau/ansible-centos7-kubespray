@@ -1,9 +1,9 @@
 # ansible-ubuntu-kubespray
 
-Ansible playbook to configure prerequisites for Kubespray on CentOS7
+Ansible playbook to configure prerequisites for Kubespray on Ubuntu
 
-Prerequisites for the CentOS7 machines:
-* SSH access using password with a user who has root permissions (centos in example)
+Prerequisites for the Ubuntu machines:
+* SSH access using password with a user who has root permissions (ubuntu in example)
 * A public key generated on your local machine
 
 This playbook will:
@@ -16,7 +16,7 @@ This playbook will:
 * enable passwordless SSH
 * set hostname
 
-Add the IP's of your CentOS7 servers in the `hosts.ini`.
+Add the IP's of your Ubuntu servers in the `hosts.ini`.
 
 ```
 [all]
@@ -28,7 +28,7 @@ node3 ansible_host=192.168.56.103
 Start the playbook. Define variables like root password, user, group and path to the public key.
 
 ```
-$ ansible-playbook -i hosts.ini -u centos -k playbook.yml --extra-vars "ansible_sudo_pass=supersecret  user=centos group=centos pubkeypath=~/.ssh/id_rsa.pub"
+$ ansible-playbook -i hosts.ini -u osboxes -k playbook.yml --extra-vars "ansible_sudo_pass=supersecret  user=osboxes group=osboxes pubkeypath=~/.ssh/id_rsa.pub"
 ```
 
 After running the playbook you can start with [Kubespray](https://github.com/kubernetes-incubator/kubespray):
@@ -48,7 +48,7 @@ $ sudo pip install -r requirements.txt
 $ cp -rfp inventory/sample inventory/mycluster
 
 # Update Ansible inventory file with inventory builder
-$ declare -a IPS=(192.168.140.101 192.168.140.102 192.168.140.103)
+$ declare -a IPS=(192.168.56.101 192.168.56.102 192.168.56.103)
 $ CONFIG_FILE=inventory/mycluster/hosts.ini python3 contrib/inventory_builder/inventory.py ${IPS[@]}
 
 # Review and change parameters under inventory/mycluster/group_var
@@ -57,9 +57,9 @@ $ cat inventory/mycluster/group_vars/k8s-cluster.yml
 # Optional: modify the hosts.ini file to your needs.
 $ vi inventory/mycluster/hosts.ini
 [all]
-node1   ansible_host=192.168.140.101 ip=192.168.140.101
-node2   ansible_host=192.168.140.102 ip=192.168.140.102
-node3   ansible_host=192.168.140.103 ip=192.168.140.103
+node1   ansible_host=192.168.56.101 ip=192.168.56.101
+node2   ansible_host=192.168.56.102 ip=192.168.56.102
+node3   ansible_host=192.168.56.103 ip=192.168.56.103
 # possible to add additional masters
 [kube-master]
 node1
@@ -81,7 +81,7 @@ node3
 
 Deploy Kubespray with Ansible Playbook.
 ```
-$ ansible-playbook -u centos -b -i inventory/mycluster/hosts.ini cluster.yml
+$ ansible-playbook -u ubuntu -b -i inventory/mycluster/hosts.ini cluster.yml
 ```
 
-More details and configuration can be found [here](https://medium.com/@lvthillo/install-kubernetes-on-bare-metal-centos7-fba40e9bb3de).
+More details and configuration can be found [here](https://medium.com/@lvthillo/install-kubernetes-on-bare-metal-ubuntu7-fba40e9bb3de).

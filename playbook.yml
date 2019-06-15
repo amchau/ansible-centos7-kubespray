@@ -4,44 +4,44 @@
   tasks:
 
   - name: update all packages
-    yum:
+    apt:
       name: '*'
       state: latest
     become: yes
 
   - name: install network tools
-    yum:
+    apt:
       name: net-tools
     become: yes
 
-  - name: install ntp
-    yum:
-      name: ntp
-    become: yes
-
-  - name: check ntpd service is running
-    command: systemctl status ntpd
-    register: result
-    ignore_errors: True
-    become: yes
-    
-  - name: configure and sync ntp
-    command: "{{item}}"
-    with_items:
-      - chkconfig ntpd on
-      - ntpdate pool.ntp.org
-    when: result is failed
-    become: yes
-
-  - name: start service ntp, if not running
-    service:
-      name: ntpd
-      state: started
-    become: yes
-
-  - name: turn off firewall for install
-    command: systemctl disable firewalld
-    become: yes
+    #  - name: install ntp
+    #    apt:
+    #      name: ntp
+    #    become: yes
+    #
+    #  - name: check ntpd service is running
+    #    command: systemctl status ntpd
+    #    register: result
+    #    ignore_errors: True
+    #    become: yes
+    #    
+    #  - name: configure and sync ntp
+    #    command: "{{item}}"
+    #    with_items:
+    #      - chkconfig ntpd on
+    #      - ntpdate pool.ntp.org
+    #    when: result is failed
+    #    become: yes
+    #
+    #  - name: start service ntp, if not running
+    #    service:
+    #      name: ntpd
+    #      state: started
+    #    become: yes
+    #
+    #  - name: turn off firewall for install
+    #    command: systemctl disable firewalld
+    #    become: yes
 
   - name: creates .ssh directory
     file: path=~/.ssh state=directory owner="{{ user }}" group="{{ group }}" mode=700
@@ -72,11 +72,11 @@
       replace: '# /dev/mapper/centos-swap swap                    swap    defaults        0 0'
     become: yes
 
-  - lineinfile:
-      path: /etc/sysconfig/network
-      state: present
-      line: 'HOSTNAME={{inventory_hostname}}.local'
-    become: yes
+    #  - lineinfile:
+    #      path: /etc/sysconfig/network
+    #      state: present
+    #      line: 'HOSTNAME={{inventory_hostname}}.local'
+    #    become: yes
 
   - lineinfile:
       path: /etc/hosts
